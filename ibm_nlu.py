@@ -3,6 +3,9 @@
 Created on Sat Jun 30 14:18:25 2018
 
 @author: hp
+
+Script for using ibm's nlu api
+username and password should be substituted
 """
 
 import json

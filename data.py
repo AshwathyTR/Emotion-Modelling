@@ -40,6 +40,7 @@ class affect_data:
                     dataset[entry]["mood"]= parts[2].split(':')
                     dataset[entry]["score"] = self.get_score( dataset[entry]["mood"] + dataset[entry]["em"])
                     dataset[entry]["class"] = self.get_class(dataset[entry]["score"] )
+                    dataset[entry]["source"] = 'affect_data'
                     
                     raw_text= sentence.strip('\n')
                     raw_text=raw_text.replace('\t','')
@@ -67,4 +68,5 @@ class affect_data:
             return 'N'
 
 
-  
+class emo_bank_data:
+    

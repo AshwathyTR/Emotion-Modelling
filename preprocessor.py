@@ -21,6 +21,8 @@ sys.path.insert(0, lib_path)
 import appos
 #contains appostrophe corrections
 from tqdm import tqdm
+from nltk import pos_tag
+from nltk.corpus import wordnet
 
 class PreProcessor:
     
@@ -33,7 +35,19 @@ class PreProcessor:
     def __init__(self):
         pass 
         
-
+        
+    def get_wordnet_pos(self,treebank_tag):
+    
+        if treebank_tag.startswith('J'):
+            return wordnet.ADJ
+        elif treebank_tag.startswith('V'):
+            return wordnet.VERB
+        elif treebank_tag.startswith('N'):
+            return wordnet.NOUN
+        elif treebank_tag.startswith('R'):
+            return wordnet.ADV
+        else:
+            return None # for easy if-statement 
     def clean(self,comment):
         """
         This function was taken from Kaggle - Stop the S@as
@@ -44,13 +58,22 @@ class PreProcessor:
         comment=re.sub("\\n","",comment)
          #remove non ascii characters
         comment = self.remove_non_ascii(comment)
-        #removing non-alphabet characters 
-        comment = re.sub("[^a-z\s]", "", comment)
+        
        #Split the sentences into words 
         words=self.tokenizer.tokenize(comment)
         # (')aphostophe  replacement (ie)   you're --> you are  
         words=[self.APPO[word] if word in self.APPO else word for word in words]
-        words=[self.lem.lemmatize(word, "v") for word in words]
+    
+        tagged = pos_tag(words)
+        words=[]
+        for word, tag in tagged:
+            wntag = self.get_wordnet_pos(tag)
+            if wntag is None:# not supply tag in case of None
+                lemma = self.lem.lemmatize(word) 
+            else:
+                lemma = self.lem.lemmatize(word, pos=wntag)
+            words.append(lemma)
+        
        #remove stop words
         words = [w for w in words if not w in self.eng_stopwords]
         clean_sent=" ".join(words)

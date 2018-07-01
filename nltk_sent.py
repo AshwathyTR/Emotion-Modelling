@@ -3,17 +3,20 @@
 Created on Sat Jun 30 18:00:19 2018
 
 @author: hp
+
+Script for sent analysis with Vader
 """
 import pylab as pl
 
 from data import affect_data
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
+from preprocessor import PreProcessor
+pp=PreProcessor()
 def get_polarities(dataset):
     sid = SentimentIntensityAnalyzer()       
     predictions = {}
     for entry in dataset.keys():
-        sentence = dataset[entry]['raw_text']
+        sentence = pp.clean(dataset[entry]['raw_text'])
         polarity = sid.polarity_scores(sentence)
         predictions[entry] = polarity['compound']
     return predictions
@@ -92,7 +95,7 @@ def standard_thresh_acc(polarities, correct,dataset):
 dataset=affect_data().load_affect_data()
 polarities=get_polarities(dataset)
 correct = get_correct(dataset)
-print standard_thresh_acc(polarities,correct,dataset)
+print find_thresh(polarities,correct,dataset)
 
 
 '''
