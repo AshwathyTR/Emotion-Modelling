@@ -75,7 +75,7 @@ class PreProcessor:
             words.append(lemma)
         
        #remove stop words
-        words = [w for w in words if not w in self.eng_stopwords]
+        #  words = [w for w in words if not w in self.eng_stopwords]
         clean_sent=" ".join(words)
         return(clean_sent)
 

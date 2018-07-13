@@ -7,7 +7,7 @@ Created on Fri Jun 29 19:10:34 2018
 
 import os
 
-class affect_data:
+class Affect_Data:
     '''
     This class loads data from Alm, Ebba Cecilia Ovesdotter. Affect in* text and speech 2008 into a dict.
     '''
@@ -68,5 +68,4 @@ class affect_data:
             return 'N'
 
 
-class emo_bank_data:
     
